@@ -1,5 +1,7 @@
 package com.example.employee.restfulapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
@@ -9,9 +11,13 @@ import java.util.Set;
 public class Company {
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long id;
     private String companyName;
     private Integer employeesNumber;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Employee> employees = new HashSet<>();
 
     public Company() {
     }
@@ -43,5 +49,13 @@ public class Company {
 
     public void setEmployeesNumber(Integer employeesNumber) {
         this.employeesNumber = employeesNumber;
+    }
+
+    public Set<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
     }
 }
